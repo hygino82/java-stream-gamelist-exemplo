@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,5 +62,11 @@ public class GameReader {
                 Game::console,
                 Collectors.mapping(Game::name, Collectors.toList())
         ));
+    }
+
+    public List<Game> findGamesReleasedBetween(LocalDate startDate, LocalDate endDate) {
+        return games.stream()
+                .filter(game -> !game.releaseDate().isBefore(startDate) && !game.releaseDate().isAfter(endDate))
+                .toList();
     }
 }

@@ -7,6 +7,10 @@ public record Game(
         ConsoleType console,
         String brand,
         LocalDate releaseDate,
-        Double price) {
+        Double price) implements Comparable<Game> {
 
+    @Override
+    public int compareTo(Game other) {
+        return this.name.compareTo(other.name);
+    }
 }
