@@ -36,5 +36,11 @@ public class LeituraArquivo {
 
         final long contarJogosLancadosEntre = reader.countGamesReleasedBetween(inicio, fim);
         System.out.printf("Foram lançados %d jogos nesse período\n", contarJogosLancadosEntre);
+
+        final var gasto = reader.countTotalGamePrice();
+        System.out.printf("Gasto total com jogos: %.2f\n", gasto);
+
+        final var gastoEmJogosPorConsole = reader.gameCostByConsole();
+        gastoEmJogosPorConsole.forEach((console, price) -> System.out.printf("\n%s US$%.2f\n", console, price));
     }
 }

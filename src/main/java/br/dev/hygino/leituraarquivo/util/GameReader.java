@@ -75,4 +75,29 @@ public class GameReader {
         Predicate<Game> filtro = game -> !game.releaseDate().isBefore(startDate) && !game.releaseDate().isAfter(endDate);
         return games.stream().filter(filtro).count();
     }
+
+    public double countTotalGamePrice() {
+        return games.stream().map(Game::price).reduce(0.0, Double::sum);
+    }
+
+    public Map<ConsoleType, Double> gameCostByConsole() {
+        return games.stream().collect(Collectors.groupingBy(
+                Game::console, // Agrupa pelo nome do console
+                Collectors.summingDouble(Game::price) // Soma os preços dos jogos em cada grupo
+        ));
+    }
+    
+    public Map<ConsoleType, Double> gameCostByConsole2() {
+        return games.stream()
+                .collect(Collectors.groupingBy(
+                        Game::console,  // Agrupa os jogos por console
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),  // Coleta os jogos em uma lista
+                                list -> list.stream()  // Cria um stream a partir da lista
+                                        .sorted((g1, g2) -> g1.price().compareTo(g2.price()))  // Ordena os jogos por preço
+                                        .map(Game::price)  // Mapeia para os preços
+                                        .reduce(0.0, Double::sum)  // Soma os preços
+                        )
+                ));
+    }
 }
