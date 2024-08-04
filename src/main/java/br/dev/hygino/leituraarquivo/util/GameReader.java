@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameReader {
 
@@ -52,5 +54,12 @@ public class GameReader {
                 .filter(game -> game.console() == console)
                 .map(Game::name)
                 .toList();
+    }
+
+    public Map<ConsoleType, List<String>> groupGamesByConsole() {
+        return games.stream().collect(Collectors.groupingBy(
+                Game::console,
+                Collectors.mapping(Game::name, Collectors.toList())
+        ));
     }
 }
