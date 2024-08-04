@@ -9,5 +9,7 @@ public enum ConsoleType {
     PLAYSTATION_3,
     PLAYSTATION_4,
     PLAYSTATION_5,
-    PC;
+    PC,
+    XBOX_360,
+    XBOX_ONE;
 }

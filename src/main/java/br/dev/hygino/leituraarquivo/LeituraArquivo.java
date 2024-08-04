@@ -8,17 +8,17 @@ import java.time.Month;
 import java.util.List;
 
 public class LeituraArquivo {
-    
+
     public static void main(String[] args) {
         GameReader reader = new GameReader();
-        
+
         reader.mostrarValores();
-        
+
         ConsoleType consoleType = ConsoleType.MEGA_DRIVE;
         final var consoleGames = reader.findGamesByConsole(consoleType);
         System.out.printf("");
         consoleGames.forEach(System.out::println);
-        
+
         System.out.println("Jogos agrupados por console");
         reader.groupGamesByConsole().forEach((console, games) -> {
             System.out.println(console);
@@ -27,12 +27,14 @@ public class LeituraArquivo {
                     .forEach(System.out::println);
             System.out.println();
         });
-        
+
         final var inicio = LocalDate.of(2010, Month.MARCH, 7);
         final var fim = LocalDate.of(2015, Month.DECEMBER, 25);
         final List<Game> jogosPorPeriodo = reader.findGamesReleasedBetween(inicio, fim);
         System.out.printf("Jogos lançados entre %s e %s\n", inicio, fim);
         jogosPorPeriodo.stream().sorted().forEach(System.out::println);
-        
+
+        final long contarJogosLancadosEntre = reader.countGamesReleasedBetween(inicio, fim);
+        System.out.printf("Foram lançados %d jogos nesse período\n", contarJogosLancadosEntre);
     }
 }

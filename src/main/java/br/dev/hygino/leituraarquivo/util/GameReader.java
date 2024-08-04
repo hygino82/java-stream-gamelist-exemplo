@@ -11,6 +11,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class GameReader {
@@ -68,5 +69,10 @@ public class GameReader {
         return games.stream()
                 .filter(game -> !game.releaseDate().isBefore(startDate) && !game.releaseDate().isAfter(endDate))
                 .toList();
+    }
+
+    public long countGamesReleasedBetween(LocalDate startDate, LocalDate endDate) {
+        Predicate<Game> filtro = game -> !game.releaseDate().isBefore(startDate) && !game.releaseDate().isAfter(endDate);
+        return games.stream().filter(filtro).count();
     }
 }
