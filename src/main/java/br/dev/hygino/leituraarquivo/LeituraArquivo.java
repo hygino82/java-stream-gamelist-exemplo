@@ -3,6 +3,7 @@ package br.dev.hygino.leituraarquivo;
 import br.dev.hygino.leituraarquivo.model.ConsoleType;
 import br.dev.hygino.leituraarquivo.model.Game;
 import br.dev.hygino.leituraarquivo.util.GameReader;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -16,7 +17,7 @@ public class LeituraArquivo {
 
         ConsoleType consoleType = ConsoleType.MEGA_DRIVE;
         final var consoleGames = reader.findGamesByConsole(consoleType);
-        System.out.printf("");
+        System.out.println();
         consoleGames.forEach(System.out::println);
 
         System.out.println("Jogos agrupados por console");
@@ -42,5 +43,13 @@ public class LeituraArquivo {
 
         final var gastoEmJogosPorConsole = reader.gameCostByConsole();
         gastoEmJogosPorConsole.forEach((console, price) -> System.out.printf("\n%s US$%.2f\n", console, price));
+
+        System.out.println("Lista de jogos agrupados por ano de lançamento");
+        final var jogosPorAno = reader.groupGamesByYear();
+        jogosPorAno.forEach((ano, jogos) -> {
+            System.out.printf("Ano: %d\n", ano);
+            jogos.stream().sorted().forEach(System.out::println);
+        });
+
     }
 }

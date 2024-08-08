@@ -2,6 +2,7 @@ package br.dev.hygino.leituraarquivo.util;
 
 import br.dev.hygino.leituraarquivo.model.ConsoleType;
 import br.dev.hygino.leituraarquivo.model.Game;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -86,7 +87,7 @@ public class GameReader {
                 Collectors.summingDouble(Game::price) // Soma os preços dos jogos em cada grupo
         ));
     }
-    
+
     public Map<ConsoleType, Double> gameCostByConsole2() {
         return games.stream()
                 .collect(Collectors.groupingBy(
@@ -99,5 +100,9 @@ public class GameReader {
                                         .reduce(0.0, Double::sum)  // Soma os preços
                         )
                 ));
+    }
+
+    public Map<Integer, List<Game>> groupGamesByYear() {
+        return games.stream().collect(Collectors.groupingBy(game -> game.releaseDate().getYear()));
     }
 }
