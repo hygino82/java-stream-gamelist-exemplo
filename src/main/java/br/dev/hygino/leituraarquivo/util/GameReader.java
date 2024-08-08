@@ -1,19 +1,18 @@
 package br.dev.hygino.leituraarquivo.util;
 
-import br.dev.hygino.leituraarquivo.model.ConsoleType;
-import br.dev.hygino.leituraarquivo.model.Game;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import br.dev.hygino.leituraarquivo.model.ConsoleType;
+import br.dev.hygino.leituraarquivo.model.Game;
 
 public class GameReader {
 
