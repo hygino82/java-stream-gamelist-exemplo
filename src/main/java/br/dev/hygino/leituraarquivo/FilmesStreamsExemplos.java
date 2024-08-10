@@ -73,6 +73,10 @@ public class FilmesStreamsExemplos {
         System.out.println("\nPais com maior gastos em filmes");
         final var paisMaiorGasto = movieReader.countryWithMoreMoviesBudget();
         System.out.printf("%s : %.2f \n", paisMaiorGasto.getKey(), paisMaiorGasto.getValue());
+
+        System.out.println("\nPaís com menor gasto em filmes");
+        final var paisMenorGasto = movieReader.countryWithLessMoviesBudget();
+        System.out.printf("%s : %.2f \n", paisMenorGasto.getKey(), paisMenorGasto.getValue());
     }
 }
 

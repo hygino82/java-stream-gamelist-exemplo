@@ -125,4 +125,14 @@ public class MovieReader {
                 .max(Map.Entry.comparingByValue()) // Encontra o país com o maior número de filmes
                 .orElse(null);
     }
+
+    public Map.Entry<String, Double> countryWithLessMoviesBudget() {
+        Map<String, Double> budgetByCountry = movies.stream()
+                .collect(Collectors.groupingBy(Movie::getCountry, Collectors.summingDouble(Movie::getBudget)));
+
+        return budgetByCountry.entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue())
+                .orElse(null);
+    }
 }
