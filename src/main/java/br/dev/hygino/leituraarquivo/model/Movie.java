@@ -10,4 +10,9 @@ public record Movie(
         LocalDate releaseDate,
         Double budget
 ) {
+    @Override
+    public String toString() {
+        return String.format("Movie[title=%s, gender=%s, director=%s, country=%s, releaseDate=%s, budget=%.2f]",
+                title, gender, director, country, releaseDate, budget);
+    }
 }
