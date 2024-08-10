@@ -6,8 +6,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class MovieReader {
@@ -53,9 +55,7 @@ public class MovieReader {
                         Movie::country,
                         Collectors.mapping(
                                 Movie::title,
-                                Collectors.toCollection(TreeSet::new)
-                        )
-                ));
+                                Collectors.toCollection(TreeSet::new))));
     }
 
     public Map<String, Double> totalBudgetByCountry() {
@@ -63,10 +63,11 @@ public class MovieReader {
                 .collect(Collectors.groupingBy(
                         Movie::country,
                         Collectors.summingDouble(Movie::budget)))
-                //codigo sem ordenação
+                // codigo sem ordenação
                 .entrySet()
                 .stream()
-                .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) // Ordena pelos valores (orçamento total), do maior para o menor
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) // Ordena pelos valores (orçamento
+                                                                                 // total), do maior para o menor
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -75,4 +76,29 @@ public class MovieReader {
                 ));
     }
 
+    public Map<String, Double> groupByGenderAndTotalBudget() {
+        return movies.stream()
+                .collect(Collectors.groupingBy(
+                        Movie::gender,
+                        Collectors.summingDouble(Movie::budget)));
+    }
+
+    public Map<Month, List<String>> findMoviesReleasedBetweenGroupByMonth(LocalDate start, LocalDate end) {
+        return movies.stream()
+                .filter(m -> !m.releaseDate().isAfter(end) && !m.releaseDate().isBefore(start))
+                .collect(Collectors.groupingBy(
+                        f -> f.releaseDate().getMonth(),
+                        Collectors.mapping(Movie::title, Collectors.toList())));
+    }
+
+    public Map<String, Long> countMoviesByDirector() {
+        return movies.stream()
+                .collect(Collectors.groupingBy(Movie::director, Collectors.counting()));
+    }
+
+    public List<String> findMoviesByCountry(String country) {
+        return movies.stream()
+                .filter(m -> m.country().equalsIgnoreCase(country))
+                .map(Movie::title).toList();
+    }
 }
