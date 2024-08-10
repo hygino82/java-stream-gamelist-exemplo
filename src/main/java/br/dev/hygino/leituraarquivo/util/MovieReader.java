@@ -67,7 +67,7 @@ public class MovieReader {
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) // Ordena pelos valores (orçamento
-                                                                                 // total), do maior para o menor
+                // total), do maior para o menor
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -100,5 +100,29 @@ public class MovieReader {
         return movies.stream()
                 .filter(m -> m.country().equalsIgnoreCase(country))
                 .map(Movie::title).toList();
+    }
+
+    public Map<Integer, Long> countMoviesByYear() {
+        return movies.stream()
+                .collect(Collectors.groupingBy(m -> m.releaseDate().getYear(), Collectors.counting()));
+    }
+
+    public Map.Entry<String, Long> countryWithMoreMovies() {
+        return movies.stream()
+                .collect(Collectors.groupingBy(Movie::country, Collectors.counting())) // Agrupa por país e conta os filmes
+                .entrySet().stream() // Converte o Map para Stream de Entry
+                .max(Map.Entry.comparingByValue()) // Encontra o país com o maior número de filmes
+                .orElse(null); // Retorna null se não houver filmes
+    }
+
+
+    public Map.Entry<String, Double> countryWithMoreMoviesBudget() {
+        Map<String, Double> budgetByCountry = movies.stream()
+                .collect(Collectors.groupingBy(Movie::getCountry, Collectors.summingDouble(Movie::getBudget)));
+
+        return budgetByCountry.entrySet()
+                .stream() // Converte o Map para Stream de Entry
+                .max(Map.Entry.comparingByValue()) // Encontra o país com o maior número de filmes
+                .orElse(null);
     }
 }

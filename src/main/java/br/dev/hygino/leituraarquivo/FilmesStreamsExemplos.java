@@ -62,6 +62,17 @@ public class FilmesStreamsExemplos {
                 movieReader.findMoviesByCountry(pais);
         buscarFilmesPorPais.forEach(System.out::println);
 
+        System.out.println("\nQuantidade de filmes lançadas por ano");
+        final var quantidadeFilmesPorAno = movieReader.countMoviesByYear();
+        quantidadeFilmesPorAno.forEach((ano, filmes) -> System.out.printf("%s: %d\n", ano, filmes));
+
+        System.out.println("Pais com mais filmes gravados");
+        final var paisComMaisFilmes = movieReader.countryWithMoreMovies();
+        System.out.println(paisComMaisFilmes);
+
+        System.out.println("\nPais com maior gastos em filmes");
+        final var paisMaiorGasto = movieReader.countryWithMoreMoviesBudget();
+        System.out.printf("%s : %.2f \n", paisMaiorGasto.getKey(), paisMaiorGasto.getValue());
     }
 }
 
