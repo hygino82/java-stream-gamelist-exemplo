@@ -77,6 +77,13 @@ public class FilmesStreamsExemplos {
         System.out.println("\nPaís com menor gasto em filmes");
         final var paisMenorGasto = movieReader.countryWithLessMoviesBudget();
         System.out.printf("%s : %.2f \n", paisMenorGasto.getKey(), paisMenorGasto.getValue());
+
+        final var filmesPorMes = movieReader.groupMoviesByMonth();
+        filmesPorMes.forEach((mes, filmes) -> {
+            System.out.println(mes);
+            filmes.forEach(System.out::println);
+            System.out.println();
+        });
     }
 }
 

@@ -135,4 +135,12 @@ public class MovieReader {
                 .min(Map.Entry.comparingByValue())
                 .orElse(null);
     }
+
+    public Map<Month, List<String>> groupMoviesByMonth() {
+        return movies.stream()
+                .collect(Collectors.groupingBy(
+                        m -> m.releaseDate().getMonth(),
+                        Collectors.mapping(Movie::title, Collectors.toList())
+                ));
+    }
 }
