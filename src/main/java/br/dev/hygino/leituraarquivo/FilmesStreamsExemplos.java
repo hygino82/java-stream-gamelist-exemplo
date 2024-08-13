@@ -4,6 +4,8 @@ import br.dev.hygino.leituraarquivo.util.MovieReader;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class FilmesStreamsExemplos {
     public static void main(String[] args) {
@@ -84,6 +86,24 @@ public class FilmesStreamsExemplos {
             filmes.forEach(System.out::println);
             System.out.println();
         });
+
+        Set<DiretorGastos> gastosDiretores = new TreeSet<>();
+        final var gastosPorDiretor = movieReader.bugetByDirector();
+        gastosPorDiretor.forEach((diretor, valores) -> {
+            System.out.println(diretor);
+            valores.forEach(x -> {
+                System.out.printf("%.2f\n", x);
+            });
+            double soma = valores.stream()
+                    .reduce(0.0, Double::sum);
+
+            //System.out.printf("A soma dos diretor %s foi de %.2f\n", diretor, soma);
+            gastosDiretores.add(new DiretorGastos(diretor, soma));
+            System.out.println();
+        });
+        System.out.println("\nTotal de gastos dos diretores");
+        gastosDiretores.forEach(System.out::println);
+        System.out.println("O diretor com mais gastos foi: " + gastosDiretores.toArray()[0]);
     }
 }
 
@@ -94,5 +114,18 @@ record BudgetCountry(
     @Override
     public int compareTo(BudgetCountry other) {
         return -this.budget.compareTo(other.budget);
+    }
+}
+
+record DiretorGastos(String nome, Double valor) implements Comparable<DiretorGastos> {
+
+    @Override
+    public String toString() {
+        return nome + String.format(": %.2f", valor);
+    }
+
+    @Override
+    public int compareTo(DiretorGastos other) {
+        return -this.valor.compareTo(other.valor);
     }
 }

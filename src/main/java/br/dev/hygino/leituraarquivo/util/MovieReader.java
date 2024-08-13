@@ -143,4 +143,11 @@ public class MovieReader {
                         Collectors.mapping(Movie::title, Collectors.toList())
                 ));
     }
+
+    public Map<String, List<Double>> bugetByDirector() {
+        return movies.stream()
+                .collect(Collectors.groupingBy(Movie::getDirector,
+                        Collectors.mapping(Movie::budget, Collectors.toList())
+                ));
+    }
 }

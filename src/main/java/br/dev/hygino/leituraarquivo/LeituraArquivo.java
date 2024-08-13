@@ -51,5 +51,6 @@ public class LeituraArquivo {
             jogos.stream().sorted().forEach(System.out::println);
         });
 
+
     }
 }
