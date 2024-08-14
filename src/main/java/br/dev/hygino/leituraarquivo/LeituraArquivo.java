@@ -65,5 +65,8 @@ public class LeituraArquivo {
         final var consoleComMenorCadastro = reader.consoleComMenorNumeroJogosCadastrados();
         System.out.println("\nConsole com menor quantidade de jogos cadastrados: " + consoleComMenorCadastro);
 
+        final var menorCusto = reader.buscarJogoComMenorCustoDoConsole(consoleType);
+        System.out.println("\nJogo com menor custo do: " + menorCusto);
+
     }
 }

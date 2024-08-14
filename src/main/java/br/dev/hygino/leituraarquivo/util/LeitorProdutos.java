@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import br.dev.hygino.leituraarquivo.model.ConsoleType;
 import br.dev.hygino.leituraarquivo.model.Produto;
 
 public class LeitorProdutos {
@@ -68,4 +69,5 @@ public class LeitorProdutos {
                         Produto::marca,
                         Collectors.mapping(Produto::nome, Collectors.toSet())));
     }
+
 }

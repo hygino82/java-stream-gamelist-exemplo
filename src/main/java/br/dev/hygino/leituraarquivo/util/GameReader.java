@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -123,5 +124,13 @@ public class GameReader {
                 .min(Map.Entry.comparingByValue()) // Encontra a entrada com o menor valor
                 // .map(Map.Entry::getKey) // Extrai a chave (console)
                 .orElse(null); // Retorna null se o mapa estiver vazio
+    }
+
+    public Map<String, Double> buscarJogoComMenorCustoDoConsole(ConsoleType console) {
+        return games.stream()
+                .filter(g -> g.console().equals(console)) // Filtra os jogos pelo console
+                .min(Comparator.comparing(Game::price)) // Encontra o jogo com o menor preço
+                .map(g -> Map.of(g.console().name(), g.price())) // Converte para um Map<String, Double>
+                .orElse(Map.of()); // Retorna um mapa vazio se nenhum jogo for encontrado
     }
 }
