@@ -12,8 +12,8 @@ public class FilmesStreamsExemplos {
         Locale.setDefault(Locale.US);
         final var movieReader = new MovieReader();
 
-        //System.out.println("Listar todos os filmes");
-        //movieReader.getMovies().forEach(System.out::println);
+        // System.out.println("Listar todos os filmes");
+        // movieReader.getMovies().forEach(System.out::println);
         // System.out.println(movieReader.getMovies().size());
 
         /*
@@ -60,8 +60,7 @@ public class FilmesStreamsExemplos {
          */
         final var pais = "Brasil";
         System.out.println("\nBuscar filmes do " + pais);
-        final List<String> buscarFilmesPorPais =
-                movieReader.findMoviesByCountry(pais);
+        final List<String> buscarFilmesPorPais = movieReader.findMoviesByCountry(pais);
         buscarFilmesPorPais.forEach(System.out::println);
 
         System.out.println("\nQuantidade de filmes lançadas por ano");
@@ -97,13 +96,26 @@ public class FilmesStreamsExemplos {
             double soma = valores.stream()
                     .reduce(0.0, Double::sum);
 
-            //System.out.printf("A soma dos diretor %s foi de %.2f\n", diretor, soma);
+            // System.out.printf("A soma dos diretor %s foi de %.2f\n", diretor, soma);
             gastosDiretores.add(new DiretorGastos(diretor, soma));
             System.out.println();
         });
         System.out.println("\nTotal de gastos dos diretores");
         gastosDiretores.forEach(System.out::println);
         System.out.println("O diretor com mais gastos foi: " + gastosDiretores.toArray()[0]);
+
+        final var diretor = "James Cameron";
+        final Set<String> filmesDoDiretor = movieReader.getMoviesByDirector(diretor);
+        System.out.println("\nFilmes do Diretor: " + diretor);
+        filmesDoDiretor.forEach(System.out::println);
+        System.out.println("Seu filme mais caro foi:");
+
+        final var filmeMaisCaroDiretor = movieReader.findMovieByDirectorWithHighestBudget(diretor);
+        System.out.println(filmeMaisCaroDiretor);
+
+        System.out.println("\nLista de filmes com titulo e orçamento");
+        final var listaTituloOrcamento = movieReader.moviesByDirectorWithBudget(diretor);
+        listaTituloOrcamento.forEach((titulo, orcamento) -> System.out.printf("%s: %.2f\n", titulo, orcamento));
     }
 }
 

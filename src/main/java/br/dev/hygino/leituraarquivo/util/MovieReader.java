@@ -1,16 +1,21 @@
 package br.dev.hygino.leituraarquivo.util;
 
-import br.dev.hygino.leituraarquivo.model.Movie;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeParseException;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import br.dev.hygino.leituraarquivo.model.Movie;
 
 public class MovieReader {
     private final List<Movie> movies;
@@ -109,12 +114,12 @@ public class MovieReader {
 
     public Map.Entry<String, Long> countryWithMoreMovies() {
         return movies.stream()
-                .collect(Collectors.groupingBy(Movie::country, Collectors.counting())) // Agrupa por país e conta os filmes
+                .collect(Collectors.groupingBy(Movie::country, Collectors.counting())) // Agrupa por país e conta os
+                                                                                       // filmes
                 .entrySet().stream() // Converte o Map para Stream de Entry
                 .max(Map.Entry.comparingByValue()) // Encontra o país com o maior número de filmes
                 .orElse(null); // Retorna null se não houver filmes
     }
-
 
     public Map.Entry<String, Double> countryWithMoreMoviesBudget() {
         Map<String, Double> budgetByCountry = movies.stream()
@@ -140,14 +145,33 @@ public class MovieReader {
         return movies.stream()
                 .collect(Collectors.groupingBy(
                         m -> m.releaseDate().getMonth(),
-                        Collectors.mapping(Movie::title, Collectors.toList())
-                ));
+                        Collectors.mapping(Movie::title, Collectors.toList())));
     }
 
     public Map<String, List<Double>> bugetByDirector() {
         return movies.stream()
                 .collect(Collectors.groupingBy(Movie::getDirector,
-                        Collectors.mapping(Movie::budget, Collectors.toList())
-                ));
+                        Collectors.mapping(Movie::budget, Collectors.toList())));
     }
+
+    public Set<String> getMoviesByDirector(String director) {
+        return movies.stream()
+                .filter(m -> m.getDirector().equals(director))
+                .map(Movie::getTitle)
+                .collect(Collectors.toSet());
+    }
+
+    public Movie findMovieByDirectorWithHighestBudget(String director) {
+        return movies.stream()
+                .filter(m -> m.getDirector().equals(director))
+                .max(Comparator.comparing(Movie::getBudget))
+                .orElse(null);
+    }
+
+    public Map<String, Double> moviesByDirectorWithBudget(String director) {
+        return movies.stream()
+                .filter(m -> m.getDirector().equals(director))
+                .collect(Collectors.toMap(Movie::getTitle, Movie::getBudget));
+    }
+
 }
