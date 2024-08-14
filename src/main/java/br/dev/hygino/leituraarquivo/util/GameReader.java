@@ -8,6 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -61,8 +62,7 @@ public class GameReader {
     public Map<ConsoleType, List<String>> groupGamesByConsole() {
         return games.stream().collect(Collectors.groupingBy(
                 Game::console,
-                Collectors.mapping(Game::name, Collectors.toList())
-        ));
+                Collectors.mapping(Game::name, Collectors.toList())));
     }
 
     public List<Game> findGamesReleasedBetween(LocalDate startDate, LocalDate endDate) {
@@ -72,7 +72,8 @@ public class GameReader {
     }
 
     public long countGamesReleasedBetween(LocalDate startDate, LocalDate endDate) {
-        Predicate<Game> filtro = game -> !game.releaseDate().isBefore(startDate) && !game.releaseDate().isAfter(endDate);
+        Predicate<Game> filtro = game -> !game.releaseDate().isBefore(startDate)
+                && !game.releaseDate().isAfter(endDate);
         return games.stream().filter(filtro).count();
     }
 
@@ -90,18 +91,37 @@ public class GameReader {
     public Map<ConsoleType, Double> gameCostByConsole2() {
         return games.stream()
                 .collect(Collectors.groupingBy(
-                        Game::console,  // Agrupa os jogos por console
+                        Game::console, // Agrupa os jogos por console
                         Collectors.collectingAndThen(
-                                Collectors.toList(),  // Coleta os jogos em uma lista
-                                list -> list.stream()  // Cria um stream a partir da lista
-                                        .sorted((g1, g2) -> g1.price().compareTo(g2.price()))  // Ordena os jogos por preço
-                                        .map(Game::price)  // Mapeia para os preços
-                                        .reduce(0.0, Double::sum)  // Soma os preços
-                        )
-                ));
+                                Collectors.toList(), // Coleta os jogos em uma lista
+                                list -> list.stream() // Cria um stream a partir da lista
+                                        .sorted((g1, g2) -> g1.price().compareTo(g2.price())) // Ordena os jogos por
+                                                                                              // preço
+                                        .map(Game::price) // Mapeia para os preços
+                                        .reduce(0.0, Double::sum) // Soma os preços
+                        )));
     }
 
     public Map<Integer, List<Game>> groupGamesByYear() {
         return games.stream().collect(Collectors.groupingBy(game -> game.releaseDate().getYear()));
+    }
+
+    public Map<ConsoleType, Set<String>> listarJogosAgrupadosPorConsole() {
+        return games.stream()
+                .collect(Collectors.groupingBy(
+                        Game::console,
+                        Collectors.mapping(Game::name, Collectors.toSet())));
+    }
+
+    public Map<String, Long> contarJogosCadastradosPorConsole() {
+        return games.stream()
+                .collect(Collectors.groupingBy(c -> c.console().name(), Collectors.counting()));
+    }
+
+    public Map.Entry<String, Long> consoleComMenorNumeroJogosCadastrados() {
+        return this.contarJogosCadastradosPorConsole().entrySet().stream()
+                .min(Map.Entry.comparingByValue()) // Encontra a entrada com o menor valor
+                // .map(Map.Entry::getKey) // Extrai a chave (console)
+                .orElse(null); // Retorna null se o mapa estiver vazio
     }
 }

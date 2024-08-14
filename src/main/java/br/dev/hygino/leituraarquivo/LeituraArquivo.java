@@ -1,19 +1,19 @@
 package br.dev.hygino.leituraarquivo;
 
-import br.dev.hygino.leituraarquivo.model.ConsoleType;
-import br.dev.hygino.leituraarquivo.model.Game;
-import br.dev.hygino.leituraarquivo.util.GameReader;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+
+import br.dev.hygino.leituraarquivo.model.ConsoleType;
+import br.dev.hygino.leituraarquivo.model.Game;
+import br.dev.hygino.leituraarquivo.util.GameReader;
 
 public class LeituraArquivo {
 
     public static void main(String[] args) {
         GameReader reader = new GameReader();
 
-        reader.mostrarValores();
+        // reader.mostrarValores();
 
         ConsoleType consoleType = ConsoleType.MEGA_DRIVE;
         final var consoleGames = reader.findGamesByConsole(consoleType);
@@ -51,6 +51,19 @@ public class LeituraArquivo {
             jogos.stream().sorted().forEach(System.out::println);
         });
 
+        final var jogosPorConsole = reader.listarJogosAgrupadosPorConsole();
+        System.out.println("\nJogos agrupados por console");
+        jogosPorConsole.forEach((c, j) -> {
+            System.out.println(c.name());
+            j.forEach(System.out::println);
+            System.out.println();
+        });
+
+        final var contagemJogosConsole = reader.contarJogosCadastradosPorConsole();
+        contagemJogosConsole.forEach((console, quantidade) -> System.out.println(console + ": " + quantidade));
+
+        final var consoleComMenorCadastro = reader.consoleComMenorNumeroJogosCadastrados();
+        System.out.println("\nConsole com menor quantidade de jogos cadastrados: " + consoleComMenorCadastro);
 
     }
 }
