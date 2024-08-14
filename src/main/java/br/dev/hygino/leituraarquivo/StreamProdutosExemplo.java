@@ -14,5 +14,13 @@ public class StreamProdutosExemplo {
         System.out.println("Quantidade de produtos cadastrados por estado");
         final Map<String, Long> quantidadePorEstado = leitorProdutos.quantidadeProdutosPorEstado();
         quantidadePorEstado.forEach((estado, quantidade) -> System.out.printf("%s: %d\n", estado, quantidade));
+
+        System.out.println("\nLista de produtos cadastrados por marca");
+        final var produtosPorMarca = leitorProdutos.listaProdutosPorMarca();
+        produtosPorMarca.forEach((produto, marcas) -> {
+            System.out.println(produto);
+            marcas.forEach(System.out::println);
+            System.out.println();
+        });
     }
 }

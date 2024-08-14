@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import br.dev.hygino.leituraarquivo.model.Produto;
@@ -58,5 +60,12 @@ public class LeitorProdutos {
     public Map<String, Long> quantidadeProdutosPorEstado() {
         return produtos.stream()
                 .collect(Collectors.groupingBy(Produto::estado, Collectors.counting()));
+    }
+
+    public Map<String, Set<String>> listaProdutosPorMarca() {
+        return produtos.stream()
+                .collect(Collectors.groupingBy(
+                        Produto::marca,
+                        Collectors.mapping(Produto::nome, Collectors.toSet())));
     }
 }
